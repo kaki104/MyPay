@@ -1,0 +1,86 @@
+<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:grid="using:Telerik.UI.Xaml.Controls.Grid"
+    xmlns:ViewModels="using:MyPay.ViewModels"
+    x:Class="MyPay.Views.SettingsPage"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Unloaded">
+            <ic:InvokeCommandAction Command="{Binding UnloadedCommand, Mode=OneWay}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+    
+    <Page.DataContext>
+        <ViewModels:SettingsViewModel />
+    </Page.DataContext>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Margin="{StaticResource MediumLeftRightMargin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                x:Uid="Settings_Title"
+                x:Name="TitlePage"
+                Style="{StaticResource PageTitleStyle}" />
+
+            <grid:RadDataGrid Grid.Row="1" Margin="0,16,0,0" ColumnDataOperationsMode="Flyout" UserEditMode="Inline"
+                              UserGroupMode="Disabled" AutoGenerateColumns="False"
+                              ItemsSource="{Binding PayInformations}" HorizontalAlignment="Left"
+                              Height="200">
+                <grid:RadDataGrid.Columns>
+                    <grid:DataGridTextColumn Header="Id" PropertyName="Id" CanUserEdit="False" SizeMode="Auto"/>
+                    <grid:DataGridBooleanColumn Header="Holiday" PropertyName="IsHoliday" SizeMode="Fixed" Width="80" />
+                    <grid:DataGridTimeColumn PropertyName="StartTime" Header="Start" CellContentFormat="{}{0:t}"
+                                             SizeMode="Auto" />
+                    <grid:DataGridTimeColumn PropertyName="EndTime" Header="End" CellContentFormat="{}{0:t}"
+                                             SizeMode="Auto" />
+                    <grid:DataGridNumericalColumn Header="Hour Pay" PropertyName="TimePay" SizeMode="Auto" CellContentFormat="{}{0:n0}"/>
+
+                </grid:RadDataGrid.Columns>
+            </grid:RadDataGrid>
+
+            <StackPanel Grid.Row="2" Margin="0,16,0,0">
+                <TextBlock
+                    x:Uid="Settings_Theme"
+                    Style="{StaticResource BodyTextStyle}" />
+                <ToggleSwitch
+                    x:Uid="Settings_ThemeToggle"
+                    IsOn="{Binding IsLightThemeEnabled}"
+                    Margin="0,4,0,0">
+                    <i:Interaction.Behaviors>
+                        <ic:EventTriggerBehavior EventName="Toggled">
+                            <ic:InvokeCommandAction Command="{Binding SwitchThemeCommand, Mode=OneWay}" />
+                        </ic:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </ToggleSwitch>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Margin="0,16,0,0">
+                <TextBlock
+                    x:Uid="Settings_About"
+                    Style="{StaticResource BodyTextStyle}" />
+                <TextBlock
+                    Text="{Binding AppDescription, Mode=OneWay}"
+                    Style="{StaticResource BodyTextStyle}"
+                    Margin="0,4,0,0" />
+                <TextBlock
+                    x:Uid="Settings_AboutDescription"
+                    Style="{StaticResource BodyTextStyle}" />
+                <HyperlinkButton
+                    x:Uid="Settings_PrivacyTermsLink"
+                    Margin="0,8,0,0" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

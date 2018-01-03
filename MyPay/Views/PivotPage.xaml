@@ -1,0 +1,35 @@
+<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:MyPay.Models"
+    xmlns:views="using:MyPay.Views"
+    xmlns:viewModels="using:MyPay.ViewModels"
+    xmlns:Core="using:Telerik.Core"
+    x:Class="MyPay.Views.PivotPage"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Core:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Page.Resources>
+    <Page.BottomAppBar>
+        <CommandBar Visibility="{Binding ShowAppBar, Converter={StaticResource BoolToVisibilityConverter}}">
+            <AppBarButton Icon="Save" Label="Save CSV" Command="{Binding SaveExcelCommand}" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Page.DataContext>
+        <viewModels:PivotViewModel />
+    </Page.DataContext>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot x:Uid="PivotPage" SelectedItem="{Binding SelectedView, Mode=TwoWay}">
+            <PivotItem x:Uid="PivotItem_Grid">
+                <views:GridPage x:Name="gridPage"/>
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_Settings">
+                <views:SettingsPage/>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>
